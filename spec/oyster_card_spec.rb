@@ -19,7 +19,7 @@ describe Oystercard do
 
   it 'cannot #top_up over max' do
     maxbal = Oystercard::DEFAULT_LIMIT
-    expect { subject.top_up(maxbal+1) }.to raise_error("You cannot have more than £ #{maxbal} on your card")
+    expect { subject.top_up(maxbal + 1) }.to raise_error("You cannot have more than £#{maxbal} on your card")
   end
 
   it 'can #deduct from #balance' do
@@ -33,13 +33,20 @@ describe Oystercard do
   end
 
   it 'should be in journey after #touch_in' do
-    subject.touch_in
-    expect(subject.in_journey?).to eq true
+    card = Oystercard.new(10)
+    card.touch_in
+    expect(card).to be_in_journey
   end
 
   it 'should not be in journey after #touch_out' do
-    subject.touch_in
-    subject.touch_out
-    expect(subject.in_journey?).to eq false
+    card = Oystercard.new(10)
+    card.touch_in
+    card.touch_out
+    expect(card).to_not be_in_journey
+  end
+
+  it 'should not allow #touch_in if less than min balance' do
+    minbal = Oystercard::DEFAULT_MINIMUM
+    expect { subject.touch_in }.to raise_error("You must have £#{minbal} on your card to make journey")
   end
 end

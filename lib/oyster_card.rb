@@ -2,6 +2,7 @@
 
 class Oystercard
   DEFAULT_LIMIT = 90
+  DEFAULT_MINIMUM = 1
   attr_accessor :balance, :in_journey
 
   def initialize(balance = 0)
@@ -10,7 +11,7 @@ class Oystercard
   end
 
   def top_up(amount)
-    raise ("You cannot have more than £ #{DEFAULT_LIMIT} on your card") if (@balance + amount) > DEFAULT_LIMIT
+    raise "You cannot have more than £#{DEFAULT_LIMIT} on your card" if (@balance + amount) > DEFAULT_LIMIT
     @balance += amount
   end
 
@@ -23,6 +24,7 @@ class Oystercard
   end
 
   def touch_in
+    raise "You must have £#{DEFAULT_MINIMUM} on your card to make journey" if @balance < 1
     @in_journey = true
   end
 
