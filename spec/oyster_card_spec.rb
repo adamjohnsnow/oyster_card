@@ -36,4 +36,10 @@ describe Oystercard do
     subject.touch_in
     expect(subject.in_journey?).to eq true
   end
+
+  it 'should not be in journey after #touch_out' do
+    subject.touch_in
+    subject.touch_out
+    expect(subject.in_journey?).to eq false
+  end
 end
