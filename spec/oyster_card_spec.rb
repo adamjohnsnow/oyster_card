@@ -35,7 +35,7 @@ describe Oystercard do
   it 'should not be in journey after #touch_out' do
     card = Oystercard.new(10)
     card.touch_in(station)
-    card.touch_out
+    card.touch_out(station)
     expect(card).to_not be_in_journey
   end
 
@@ -47,7 +47,7 @@ describe Oystercard do
 
   it 'should deduct minimum fare on #touch_out' do
     card = Oystercard.new(10)
-    expect { card.touch_out }.to change { card.balance }.by(-1)
+    expect { card.touch_out(station) }.to change { card.balance }.by(-1)
   end
 
   it '#touch_in remembers #entry_station' do
@@ -56,4 +56,14 @@ describe Oystercard do
     expect(card.entry_station).to eq station
   end
 
+  it 'defaults empty #journeys list' do
+    expect(subject.journeys).to eq []
+  end
+
+  it "records one #journey" do
+    card = Oystercard.new(10)
+    card.touch_in(station)
+    card.touch_out(station)
+    expect(card.journeys).to eq [:entry => station, :exit => station}]
+  end
 end
