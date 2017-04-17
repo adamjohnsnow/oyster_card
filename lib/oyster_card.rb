@@ -3,7 +3,7 @@
 class Oystercard
   DEFAULT_LIMIT = 90
   DEFAULT_MINIMUM = 1
-  attr_accessor :balance, :in_journey
+  attr_accessor :balance, :entry_station
 
   def initialize(balance = 0)
     @balance = balance
@@ -15,20 +15,23 @@ class Oystercard
     @balance += amount
   end
 
-  def deduct(amount)
-    @balance -= amount
-  end
-
   def in_journey?
-    @in_journey
+    !!@entry_station
   end
 
-  def touch_in
+  def touch_in(station)
     raise "You must have £#{DEFAULT_MINIMUM} on your card to make journey" if @balance < 1
-    @in_journey = true
+    @entry_station = station
   end
 
   def touch_out
-    @in_journey = false
+    deduct(DEFAULT_MINIMUM)
+    @entry_station = nil
+  end
+
+  private
+
+  def deduct(amount)
+    @balance -= amount
   end
 end
