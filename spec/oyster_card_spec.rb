@@ -64,6 +64,6 @@ describe Oystercard do
     card = Oystercard.new(10)
     card.touch_in(station)
     card.touch_out(station)
-    expect(card.journeys).to eq [:entry => station, :exit => station}]
+    expect(card.journeys).to eq [{ :entry => station, :exit => station }]
   end
 end

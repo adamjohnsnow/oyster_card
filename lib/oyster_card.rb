@@ -1,6 +1,5 @@
-# Oystercard class
-
 class Oystercard
+
   DEFAULT_LIMIT = 90
   DEFAULT_MINIMUM = 1
   attr_accessor :balance, :entry_station, :journeys, :in_journey
@@ -26,7 +25,7 @@ class Oystercard
 
   def touch_out(station)
     deduct(DEFAULT_MINIMUM)
-    @journeys << {entry: @entry_station, exit: station}
+    @journeys << { entry: @entry_station, exit: station }
     @entry_station = nil
   end
 
