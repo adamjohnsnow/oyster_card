@@ -1,4 +1,4 @@
-require "./lib/journey"
+require './lib/journey'
 
 describe Journey do
 
@@ -9,7 +9,7 @@ describe Journey do
 
     it 'captures #journey details with #time, #entry and #exit' do
       Journey.new(oyster_card, station1, station2)
-      expect(oyster_card.journeys).to eq [{time: Time.new.round, entry: oyster_card.entry_station, exit: oyster_card.exit_station, charge: 1}]
+      expect(oyster_card.journeys).to eq [{ time: Time.new.round, entry: oyster_card.entry_station, exit: oyster_card.exit_station, charge: 1 }]
     end
   end
 
@@ -19,18 +19,18 @@ describe Journey do
     let(:oyster_card) { double :oyster_card, journeys: [], entry_station: station1, exit_station: station2}
 
     it 'captures #journey details with #time, #entry and #exit' do
-      journey_log = Journey.new(oyster_card, station1, station2)
-      expect(oyster_card.journeys).to eq [{time: Time.new.round, entry: oyster_card.entry_station, exit: oyster_card.exit_station, charge: 6}]
+      Journey.new(oyster_card, station1, station2)
+      expect(oyster_card.journeys).to eq [{ time: Time.new.round, entry: oyster_card.entry_station, exit: oyster_card.exit_station, charge: 6 }]
     end
   end
   context '#penalty_charge on nil #entry_station' do
     let(:station1) { nil }
-    let(:station2) { double :station, name: 'test1', zone: 1  }
+    let(:station2) { double :station, name: 'test1', zone: 1 }
     let(:oyster_card) { double :oyster_card, journeys: [], entry_station: station1, exit_station: station2}
 
     it 'captures #journey details with #time, #entry and #exit' do
       journey_log = Journey.new(oyster_card, station1, station2)
-      expect(oyster_card.journeys).to eq [{time: Time.new.round, entry: oyster_card.entry_station, exit: oyster_card.exit_station, charge: 6}]
+      expect(oyster_card.journeys).to eq [{ time: Time.new.round, entry: oyster_card.entry_station, exit: oyster_card.exit_station, charge: 6 }]
     end
   end
 end

@@ -2,7 +2,6 @@ require_relative 'station'
 require_relative 'journey'
 
 class Oystercard
-
   DEFAULT_LIMIT = 90
   DEFAULT_MINIMUM = 1
   PENALTY_CHARGE = 6
@@ -29,8 +28,7 @@ class Oystercard
   end
 
   def touch_out(station)
-    journey_log = Journey.new(self, @entry_station, station)
-    deduct(journey_log.new_journey[:charge])
+    deduct(Journey.new(self, @entry_station, station).new_journey[:charge])
     @entry_station = nil
   end
 
