@@ -83,17 +83,4 @@ describe Oystercard do
 
   end
 
-  describe '#journeys' do
-
-    context 'has completed a #journey' do
-
-      it "records one #journey" do
-        card = Oystercard.new(10)
-        card.touch_in(station)
-        card.touch_out(station)
-        expect(card.journeys).to eq [{ :entry => station, :exit => station }]
-      end
-
-    end
-  end
 end

@@ -1,4 +1,4 @@
-require_relative 'oyster_card'
+
 
 class Station
 
@@ -8,5 +8,5 @@ class Station
     @name = name
     @zone = zone
   end
-  
+
 end

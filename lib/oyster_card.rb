@@ -1,4 +1,5 @@
 require_relative 'station'
+require_relative 'journey'
 
 class Oystercard
 
@@ -21,13 +22,13 @@ class Oystercard
   end
 
   def touch_in(station)
-    raise "You must have £#{DEFAULT_MINIMUM} on your card to make journey" if @balance < 1
+    raise "You must have £#{DEFAULT_MINIMUM} on your card to make journey" if @balance < DEFAULT_MINIMUM
     @entry_station = station
   end
 
   def touch_out(station)
+    new_journey = Journey.new(self, @entry_station, station)
     deduct(DEFAULT_MINIMUM)
-    @journeys << { entry: @entry_station, exit: station }
     @entry_station = nil
   end
 
