@@ -3,33 +3,29 @@
 #### PRY example
 
 ```
-Adams-MBP:oyster_card adamsnow$ pry
 [1] pry(main)> load './lib/oyster_card.rb'
 => true
-[2] pry(main)> card = Oystercard.new(10)
-=> #<Oystercard:0x007faeb69e1a08 @balance=10, @journeys=[]>
+[2] pry(main)> card = Oystercard.new
+=> #<Oystercard:0x007ffcff376960 @balance=0, @journeys=[]>
 [3] pry(main)> card.top_up(20)
-=> 30
-[4] pry(main)> card.top_up(61)
-RuntimeError: You cannot have more than £90 on your card
-from /Users/adamsnow/OneDrive/MacBook Only/Coding/Projects/oyster_card/lib/oyster_card.rb:16:in `top_up'
-[5] pry(main)> card
-=> #<Oystercard:0x007faeb69e1a08 @balance=30, @journeys=[]>
-[6] pry(main)> monument = Station.new('Monument',1)
-=> #<Station:0x007faeb62597e0 @name="Monument", @zone=1>
-[7] pry(main)> leyton = Station.new('Leyton',3)
-=> #<Station:0x007faeb61f2090 @name="Leyton", @zone=3>
-[8] pry(main)> card.touch_in(leyton)
-=> #<Station:0x007faeb61f2090 @name="Leyton", @zone=3>
-[9] pry(main)> card.touch_out(monument)
+=> 20
+[4] pry(main)> leyton = Station.new('Leyton',3)
+=> #<Station:0x007ffcff2e43d0 @name="Leyton", @zone=3>
+[5] pry(main)> bank = Station.new('Bank',1)
+=> #<Station:0x007ffcff29d688 @name="Bank", @zone=1>
+[6] pry(main)> card.touch_in(leyton)
+=> #<Station:0x007ffcff2e43d0 @name="Leyton", @zone=3>
+[7] pry(main)> card.touch_out(bank)
 => nil
-[10] pry(main)> card.journeys
-=> [{:time=>2017-04-18 19:12:47 +0100,
-  :entry=>#<Station:0x007faeb61f2090 @name="Leyton", @zone=3>,
-  :exit=>#<Station:0x007faeb62597e0 @name="Monument", @zone=1>,
-  :charge=>1}]
-[11] pry(main)> card.balance
-=> 29
+[8] pry(main)> card
+=> #<Oystercard:0x007ffcff376960
+ @balance=17,
+ @entry_station=nil,
+ @journeys=
+  [{:time=>2017-04-18 19:47:02 +0100,
+    :entry=>#<Station:0x007ffcff2e43d0 @name="Leyton", @zone=3>,
+    :exit=>#<Station:0x007ffcff29d688 @name="Bank", @zone=1>,
+    :charge=>3}]>
 ```
 
 #### User stories

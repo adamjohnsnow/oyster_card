@@ -1,7 +1,8 @@
 require './lib/oyster_card'
 
 describe Oystercard do
-  let(:station) { double :station }
+  let(:station1) { double :station, zone: 1}
+  let(:station2) { double :station, zone: 3}
 
   describe 'default #card' do
 
@@ -44,7 +45,7 @@ describe Oystercard do
       it 'should not allow #touch_in if less than min balance' do
         minbal = Oystercard::DEFAULT_MINIMUM
         error_text = "You must have £#{minbal} on your card to make journey"
-        expect { subject.touch_in(station) }.to raise_error(error_text)
+        expect { subject.touch_in(station1) }.to raise_error(error_text)
       end
     end
 
@@ -52,13 +53,13 @@ describe Oystercard do
       before { subject.top_up(2) }
 
       it 'should be in journey after #touch_in' do
-        subject.touch_in(station)
+        subject.touch_in(station1)
         expect(subject).to be_in_journey
       end
 
       it '#touch_in remembers #entry_station' do
-        subject.touch_in(station)
-        expect(subject.entry_station).to eq station
+        subject.touch_in(station1)
+        expect(subject.entry_station).to eq station1
       end
 
     end
@@ -68,17 +69,17 @@ describe Oystercard do
   describe '#touch_out' do
 
     before do
-      subject.top_up(2)
-      subject.touch_in(station)
+      subject.top_up(10)
+      subject.touch_in(station1)
     end
 
     it 'should not be in journey after #touch_out' do
-      subject.touch_out(station)
+      subject.touch_out(station2)
       expect(subject).to_not be_in_journey
     end
 
-    it 'should deduct minimum fare on #touch_out' do
-      expect { subject.touch_out(station) }.to change { subject.balance }.by(-1)
+    it 'should deduct correct fare on #touch_out' do
+      expect { subject.touch_out(station2) }.to change { subject.balance }.by(-1)
     end
 
   end

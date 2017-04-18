@@ -5,6 +5,8 @@ class Oystercard
 
   DEFAULT_LIMIT = 90
   DEFAULT_MINIMUM = 1
+  PENALTY_CHARGE = 6
+
   attr_accessor :balance, :entry_station, :journeys, :in_journey
 
   def initialize(balance = 0)
@@ -27,8 +29,8 @@ class Oystercard
   end
 
   def touch_out(station)
-    new_journey = Journey.new(self, @entry_station, station)
-    deduct(DEFAULT_MINIMUM)
+    journey_log = Journey.new(self, @entry_station, station)
+    deduct(journey_log.new_journey[:charge])
     @entry_station = nil
   end
 
