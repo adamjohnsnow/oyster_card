@@ -7,5 +7,6 @@
 Objects  | Messages
 ------------- | -------------
 Oystercard  | Topup
-  | Deduct
-Station  | is_working
+Oystercard  | Deduct
+Station  |
+Journey | Calculate charge
