@@ -18,6 +18,10 @@ describe Oystercard do
       expect(subject.in_journey?).to eq false
     end
 
+    it 'has empty #journeys list' do
+      expect(subject.journeys).to eq []
+    end
+
   end
 
   describe '#top_up' do
@@ -43,7 +47,7 @@ describe Oystercard do
         expect { subject.touch_in(station) }.to raise_error(error_text)
       end
     end
-    
+
     context '#card has #balance' do
       before { subject.top_up(2) }
 
@@ -79,14 +83,17 @@ describe Oystercard do
 
   end
 
-  it 'defaults empty #journeys list' do
-    expect(subject.journeys).to eq []
-  end
+  describe '#journeys' do
 
-  it "records one #journey" do
-    card = Oystercard.new(10)
-    card.touch_in(station)
-    card.touch_out(station)
-    expect(card.journeys).to eq [{ :entry => station, :exit => station }]
+    context 'has completed a #journey' do
+
+      it "records one #journey" do
+        card = Oystercard.new(10)
+        card.touch_in(station)
+        card.touch_out(station)
+        expect(card.journeys).to eq [{ :entry => station, :exit => station }]
+      end
+
+    end
   end
 end
