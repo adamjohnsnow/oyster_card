@@ -7,5 +7,5 @@
 Objects  | Messages
 ------------- | -------------
 Oystercard  | Topup
-| Deduct
+  | Deduct
 Station  | is_working
