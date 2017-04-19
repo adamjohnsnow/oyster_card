@@ -1,5 +1,20 @@
 ## OYSTERCARD CHALLENGE
 
+#### IRB/PRY commands
+
+```
+load './lib/oyster_card.rb'
+card = Oystercard.new
+card.top_up(20)
+leyton = Station.new('Leyton',3)
+bank = Station.new('Bank',1)
+card.touch_in(leyton)
+card.touch_out(bank)
+card
+card.touch_out(leyton)
+card
+```
+
 #### PRY example
 
 ```
@@ -86,5 +101,6 @@ Objects  | Messages
 ------------- | -------------
 Oystercard  | Topup
 Oystercard  | Deduct
-Station  |
+Station  | Zone
 Journey | Calculate charge
+Journey Log | start and end of journey

@@ -6,3 +6,5 @@ bank = Station.new('Bank',1)
 card.touch_in(leyton)
 card.touch_out(bank)
 card
+card.touch_out(leyton)
+card
