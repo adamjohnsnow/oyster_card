@@ -1,19 +1,9 @@
 class Journey
-  attr_reader :new_journey
+  attr_reader :current_journey
 
-  def initialize(oyster_card, start, finish)
-    fare = fare(start, finish)
-    @new_journey = { time: Time.now.round, entry: start, exit: finish, charge: fare }
-    oyster_card.journeys << @new_journey
+  def initialize(symbol, station)
+    @current_journey = {}
+    @current_journey[symbol] = station
   end
 
-  private
-
-  def fare(start, finish)
-    if start.nil? || finish.nil?
-      Oystercard::PENALTY_CHARGE
-    else
-      Oystercard::DEFAULT_MINIMUM
-    end
-  end
 end

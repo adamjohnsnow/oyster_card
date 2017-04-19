@@ -19,9 +19,6 @@ describe Oystercard do
       expect(subject.in_journey?).to eq false
     end
 
-    it 'has empty #journeys list' do
-      expect(subject.journeys).to eq []
-    end
   end
 
   describe '#top_up' do
@@ -51,10 +48,6 @@ describe Oystercard do
         expect(subject).to be_in_journey
       end
 
-      it '#touch_in remembers #entry_station' do
-        subject.touch_in(station1)
-        expect(subject.entry_station).to eq station1
-      end
     end
   end
 
@@ -63,10 +56,7 @@ describe Oystercard do
       subject.top_up(10)
       subject.touch_in(station1)
     end
-    it 'should not be in journey after #touch_out' do
-      subject.touch_out(station2)
-      expect(subject).to_not be_in_journey
-    end
+
     it 'should deduct correct fare on #touch_out' do
       expect { subject.touch_out(station2) }.to change { subject.balance }.by(-1)
     end

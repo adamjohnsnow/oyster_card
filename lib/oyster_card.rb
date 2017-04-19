@@ -1,5 +1,6 @@
 require_relative 'station'
 require_relative 'journey'
+require_relative 'journey_log'
 
 class Oystercard
   DEFAULT_LIMIT = 90
@@ -7,10 +8,11 @@ class Oystercard
   PENALTY_CHARGE = 6
 
   attr_accessor :balance, :entry_station, :journeys, :in_journey
+  attr_reader :journey
 
   def initialize(balance = 0)
     @balance = balance
-    @journeys = []
+    @journeys = JourneyLog.new
   end
 
   def top_up(amount)
@@ -18,18 +20,18 @@ class Oystercard
     @balance += amount
   end
 
-  def in_journey?
-    !!@entry_station
-  end
-
   def touch_in(station)
     raise "You must have £#{DEFAULT_MINIMUM} on your card to make journey" if @balance < DEFAULT_MINIMUM
-    @entry_station = station
+    @journeys.touch_in(Journey.new(:in, station))
   end
 
   def touch_out(station)
-    deduct(Journey.new(self, @entry_station, station).new_journey[:charge])
-    @entry_station = nil
+    @journeys.touch_out(Journey.new(:exit,station))
+    deduct(journeys.fare)
+  end
+
+  def in_journey?
+    @journeys.pending_journey != []
   end
 
   private

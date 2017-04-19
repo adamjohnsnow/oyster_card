@@ -99,8 +99,7 @@ I need to have the correct fare calculated
 
 Objects  | Messages
 ------------- | -------------
-Oystercard  | Topup
-Oystercard  | Deduct
+Oystercard  | Topup and deduct
 Station  | Zone
 Journey | Calculate charge
 Journey Log | start and end of journey
