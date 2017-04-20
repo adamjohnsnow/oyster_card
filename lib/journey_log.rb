@@ -22,7 +22,11 @@ class JourneyLog
   end
 
 
-  def incomplete_journey(incomplete_journey)
+  def incomplete_journey(error_message)
+    error_hash = Hash.new
+    error_hash[:incomplete_journey] = error_message
+    error_hash[:charge] = Oystercard::PENALTY_CHARGE
+    @journey_log << @pending_journey.start_station.merge(error_hash)
   end
 
   def fare
