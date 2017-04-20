@@ -1,8 +1,8 @@
 require './lib/oyster_card'
 
 describe Oystercard do
-  let(:station1) { double :station, zone: 1 }
-  let(:station2) { double :station, zone: 3 }
+  let(:station1) { double :station, name: 'name', zone: 1 }
+  let(:station2) { double :station, name: 'name', zone: 3 }
 
   describe 'default #card' do
 
@@ -42,12 +42,16 @@ describe Oystercard do
       end
     end
     context '#card has #balance' do
-      before { subject.top_up(2) }
+      before { subject.top_up(10) }
       it 'should be in journey after #touch_in' do
         subject.touch_in(station1)
         expect(subject).to be_in_journey
       end
-
+      it 'should deduct a penalty if card is already in journey' do
+        subject.touch_in(station1)
+        penalty = Oystercard::PENALTY_CHARGE
+        expect{ subject.touch_in(station1) }.to change { subject.balance }.by(-penalty)
+      end
     end
   end
 
@@ -60,5 +64,6 @@ describe Oystercard do
     it 'should deduct correct fare on #touch_out' do
       expect { subject.touch_out(station2) }.to change { subject.balance }.by(-1)
     end
+
   end
 end

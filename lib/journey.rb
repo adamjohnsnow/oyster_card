@@ -1,9 +1,12 @@
 class Journey
-  attr_reader :current_journey
+  attr_reader :start_station, :end_station
 
-  def initialize(symbol, station)
-    @current_journey = {}
-    @current_journey[symbol] = station
+  def initialize(station)
+    @start_station = { entrytime: Time.new.round, entrystation: station.name, entryzone: station.zone }
+  end
+
+  def end_journey(station)
+    @end_station = { exittime: Time.new.round, exitstation: station.name, exitzone: station.zone }
   end
 
 end

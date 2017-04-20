@@ -22,16 +22,22 @@ class Oystercard
 
   def touch_in(station)
     raise "You must have £#{DEFAULT_MINIMUM} on your card to make journey" if @balance < DEFAULT_MINIMUM
-    @journeys.touch_in(Journey.new(:in, station))
+    penalty_charge if in_journey?
+    @journeys.touch_in(station)
   end
 
   def touch_out(station)
-    @journeys.touch_out(Journey.new(:exit,station))
-    deduct(journeys.fare)
+    @journeys.touch_out(station)
+    # deduct(journeys.fare)
   end
 
   def in_journey?
     @journeys.pending_journey != []
+  end
+
+  def penalty_charge
+    journeys.log_journey(@journeys.pending_journey)
+    deduct(PENALTY_CHARGE)
   end
 
   private
