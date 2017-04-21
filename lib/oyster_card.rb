@@ -2,12 +2,6 @@ require_relative 'station'
 require_relative 'journey'
 require_relative 'journey_log'
 
-## This class understands that touching in always creates a new journey
-## and that touching out ends an existing journey
-## and that touching out sometimes creates an incomplete journey
-## and understands and manages a balance
-## and understands whether or not it is currently in use
-
 class Oystercard
   DEFAULT_LIMIT = 90
   DEFAULT_MINIMUM = 1
