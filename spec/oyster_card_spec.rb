@@ -54,15 +54,26 @@ describe Oystercard do
   end
 
   describe '#touch_out' do
+
     before do
       test_card.top_up(10)
       test_card.touch_in(station1)
     end
 
-    it 'should deduct correct fare on #touch_out' do
-      allow(journey_log).to receive(:log)
-      allow(journey_log).to receive(:fare).and_return(1)
-      expect { test_card.touch_out(station2) }.to change { test_card.balance }.by(-1)
+    describe 'deduction' do
+
+      it 'should deduct 3 on #touch_out' do
+        allow(journey_log).to receive(:log)
+        allow(journey_log).to receive(:fare).and_return(1)
+        expect { test_card.touch_out(station2) }.to change { test_card.balance }.by(-3)
+      end
+
+      it 'should deduct 1 on #touch_out' do
+        allow(journey_log).to receive(:log)
+        allow(journey_log).to receive(:fare).and_return(1)
+        expect { test_card.touch_out(station1) }.to change { test_card.balance }.by(-1)
+      end
+
     end
 
   end

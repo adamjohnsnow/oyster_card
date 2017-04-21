@@ -41,15 +41,17 @@ class Oystercard
 
   def touch_out_good(station)
     @trip.end_journey(station)
+    fare = @trip.calculate_fare(@trip) + DEFAULT_MINIMUM
     @journey_log.log(@trip)
     @trip = nil
-    deduct(journey_log.fare)
+    deduct(fare)
   end
 
   def touch_out_bad(station)
     @trip = Journey.new
     @journey_log.incomplete_journey(trip.end_journey(station))
     deduct(PENALTY_CHARGE)
+    @trip = nil
   end
 
   def touch_in_bad
@@ -61,7 +63,7 @@ class Oystercard
     @trip != nil
   end
 
-  def deduct(amount)
-    @balance -= amount
+  def deduct(fare)
+    @balance -= fare
   end
 end

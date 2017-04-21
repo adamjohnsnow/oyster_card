@@ -10,9 +10,11 @@ class Journey
     @end_station = { exittime: Time.new.round, exitstation: station.name, exitzone: station.zone }
   end
 
-  def calculate_fare(enter_zone = 0,exit_zone = 0)
+  def calculate_fare(trip)
+    enter_zone = trip.start_station[:entryzone]
+    exit_zone = trip.end_station[:exitzone]
     travelled_zones = [enter_zone,exit_zone].sort
-    fare = travelled_zones[1] - travelled_zones[0] + Oystercard::DEFAULT_MINIMUM
+    travelled_zones[1] - travelled_zones[0]
   end
 
 end
