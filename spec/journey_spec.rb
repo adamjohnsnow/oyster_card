@@ -2,20 +2,20 @@ require './lib/journey'
 
 describe Journey do
   let(:station) { double :station, name: 'name', zone: 1}
+  let(:oystercard) { double subject::Oystercard::DEFAULT_MINIMUM }
 
   context 'capturing stations' do
 
     it 'captures #journey start' do
-      journey = Journey.new(station)
-      my_hash = { enter: [station.name, station.zone] }
-      expect(journey.current_journey).to eq my_hash
+      my_hash = { entrytime: Time.new.round, entrystation: 'name', entryzone: 1 }
+      subject.start_journey(station)
+      expect(subject.start_station).to eq my_hash
     end
 
     it 'captures #journey end' do
-      journey = Journey.new(station)
-      journey.end_journey(station)
-      my_hash = { enter: [station.name, station.zone], exit: [station.name, station.zone] }
-      expect(journey.current_journey).to eq my_hash
+      my_hash = { exittime: Time.new.round, exitstation: 'name', exitzone: 1 }
+      subject.end_journey(station)
+      expect(subject.end_station).to eq my_hash
     end
 
   end

@@ -13,11 +13,11 @@ class Oystercard
   DEFAULT_MINIMUM = 1
   PENALTY_CHARGE = 6
 
-  attr_reader :journey_log, :trip
+  attr_reader :journey_log, :trip, :balance
 
-  def initialize(balance = 0)
-    @balance = balance
-    @journey_log = JourneyLog.new
+  def initialize(journey_log = JourneyLog.new)
+    @balance = 0
+    @journey_log = journey_log
     @trip = nil
   end
 
@@ -29,7 +29,8 @@ class Oystercard
   def touch_in(station)
     raise "You must have £#{DEFAULT_MINIMUM} on your card to make journey" if @balance < DEFAULT_MINIMUM
     touch_in_bad if in_journey?
-    @trip = Journey.new.start_journey(station)
+    @trip = Journey.new
+    @trip.start_journey(station)
   end
 
   def touch_out(station)
@@ -39,13 +40,15 @@ class Oystercard
   private
 
   def touch_out_good(station)
-    @journey_log.log(@trip.end_journey(station))
+    @trip.end_journey(station)
+    @journey_log.log(@trip)
     @trip = nil
     deduct(journey_log.fare)
   end
 
   def touch_out_bad(station)
-    @journey_log.incomplete_journey(Journey.new.end_journey(station))
+    @trip = Journey.new
+    @journey_log.incomplete_journey(trip.end_journey(station))
     deduct(PENALTY_CHARGE)
   end
 

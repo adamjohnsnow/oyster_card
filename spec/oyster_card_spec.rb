@@ -1,35 +1,32 @@
 require './lib/oyster_card'
 
 describe Oystercard do
+  let(:journey_log) { double :journey_log }
   let(:station1) { double :station, name: 'name', zone: 1 }
   let(:station2) { double :station, name: 'name', zone: 3 }
+  let(:test_card) { Oystercard.new(journey_log) }
 
   describe 'default #card' do
 
     it 'has a #balance of zero' do
-      expect(subject.balance).to eq(0)
-    end
-
-    it 'is able to get variable #balance' do
-      card = Oystercard.new(10)
-      expect(card.balance).to eq(10)
+      expect(test_card.balance).to eq(0)
     end
 
     it 'should not be in a journey' do
-      expect(subject.in_journey?).to eq false
+      expect(test_card.trip).to eq nil
     end
 
   end
 
   describe '#top_up' do
     it 'can #top_up' do
-      expect { subject.top_up(10) }.to change { subject.balance }.by(10)
+      expect { test_card.top_up(10) }.to change { test_card.balance }.by(10)
     end
 
     it 'cannot #top_up over max' do
       maxbal = Oystercard::DEFAULT_LIMIT
       error_text = "You cannot have more than £#{maxbal} on your card"
-      expect { subject.top_up(maxbal + 1) }.to raise_error(error_text)
+      expect { test_card.top_up(maxbal + 1) }.to raise_error(error_text)
     end
   end
 
@@ -38,31 +35,34 @@ describe Oystercard do
       it 'should not allow #touch_in if less than min balance' do
         minbal = Oystercard::DEFAULT_MINIMUM
         error_text = "You must have £#{minbal} on your card to make journey"
-        expect { subject.touch_in(station1) }.to raise_error(error_text)
+        expect { test_card.touch_in(station1) }.to raise_error(error_text)
       end
     end
     context '#card has #balance' do
-      before { subject.top_up(10) }
+      before { test_card.top_up(10) }
       it 'should be in journey after #touch_in' do
-        subject.touch_in(station1)
-        expect(subject).to be_in_journey
+        test_card.touch_in(station1)
+        expect(test_card.trip).not_to eq nil
       end
       it 'should deduct a penalty if card is already in journey' do
-        subject.touch_in(station1)
+        allow(journey_log).to receive(:incomplete_journey)
+        test_card.touch_in(station1)
         penalty = Oystercard::PENALTY_CHARGE
-        expect{ subject.touch_in(station1) }.to change { subject.balance }.by(-penalty)
+        expect{ test_card.touch_in(station1) }.to change { test_card.balance }.by(-penalty)
       end
     end
   end
 
   describe '#touch_out' do
     before do
-      subject.top_up(10)
-      subject.touch_in(station1)
+      test_card.top_up(10)
+      test_card.touch_in(station1)
     end
 
     it 'should deduct correct fare on #touch_out' do
-      expect { subject.touch_out(station2) }.to change { subject.balance }.by(-1)
+      allow(journey_log).to receive(:log)
+      allow(journey_log).to receive(:fare).and_return(1)
+      expect { test_card.touch_out(station2) }.to change { test_card.balance }.by(-1)
     end
 
   end

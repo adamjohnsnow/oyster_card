@@ -1,3 +1,5 @@
+## Tests journey_log
+
 require './lib/journey_log'
 
 describe JourneyLog do
@@ -9,5 +11,5 @@ describe JourneyLog do
     expect(subject.journey_log).to eq []
   end
 
-  
+
 end

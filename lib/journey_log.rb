@@ -1,4 +1,7 @@
+require_relative 'oyster_card'
+
 class JourneyLog
+
   attr_reader :journey_log, :pending_journey
 
   def initialize
@@ -10,7 +13,8 @@ class JourneyLog
   end
 
   def incomplete_journey(trip)
-    @journey_log << trip[:incomplete_journey] = "Penalty(£#{Oystercard:PENALTY_CHARGE})"
+    trip[:PENALTY_CHARGE] = Oystercard::PENALTY_CHARGE
+    @journey_log << trip
   end
 
   def fare
